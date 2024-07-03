@@ -132,9 +132,10 @@ JOIN professor ON course.professor_id = professor.id;
 
 -- 13. Trova gli studenti e i corsi relativi al dipartimento di Chimica.
 select student.name as student_name, course.name as course_name
-from student
+from student 
 join course_subscription on student_id = course_subscription.student_id 
 join course on course_subscription.course_id = course.id 
+join professor p ON course.professor_id = p.id
 where course.department like 'Chimica'
 
 -- 14. Visualizza i nomi degli studenti e i corsi che hanno frequentato nel 2022.
@@ -145,12 +146,13 @@ join course ON course_subscription.course_id=course.id
 where student.subscription_year like '2022'
 
 -- 15. Elencare i professori con i loro corsi e i relativi dipartimenti.
-select professor.name as professor_name, course.name as course_name, course.department AS department
-from professor 
-join course on professor_id =course.professor_id 
+select p.name AS professor_name, c.name AS course_name, c.department AS department
+from professor p
+join course c ON p.id = c.professor_id
+order by professor_name;
 
--- 19. Visualizza i corsi con il maggior numero di studenti.
-select course.name as course_name, count(*) as student_count
+ -- 19. Visualizza i corsi con il maggior numero di studenti.
+select course.name as course_name, count(*) as course_count
 from course 
 join course_subscription on course.id= course_subscription.course_id 
 group by course.id
